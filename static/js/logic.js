@@ -37,21 +37,23 @@ var myMap = L.map("map", {
   }).catch(function(error) {
     console.log("Error fetching or parsing data: ", error);
   });
-  
-  var legend = L.control({ position: 'bottomright' });
-  
-  legend.onAdd = function (map) {
-    var div = L.DomUtil.create('div', 'info legend'),
-        grades = [-10, 10, 30, 50, 70, 90];
+
+  function fillLegend() {
+    var legend = document.getElementById('legend');
+    var grades = [-10, 10, 30, 50, 70, 90]; 
+    var labels = [];
   
     for (var i = 0; i < grades.length; i++) {
-      div.innerHTML +=
-          '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
-          grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + ' km<br>' : '+ km');
+      var color = getColor(grades[i] + 1);
+      labels.push(
+        '<i style="background:' + color + '; width: 18px; height: 18px; float: left;"></i> ' +
+        grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + ' km' : '+ km')
+      );
     }
   
-    return div;
-  };
+    legend.innerHTML = labels.join('<br>');
+  }
   
-  legend.addTo(myMap);
+  fillLegend();
+  
   
